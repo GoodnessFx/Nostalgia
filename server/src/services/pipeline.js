@@ -3,6 +3,15 @@ const path = require("path");
 const ffmpeg = require("fluent-ffmpeg");
 const ffmpegPath = require("ffmpeg-static");
 
+// Ensure FFmpeg binary is executable on Vercel/Linux
+if (process.platform !== "win32") {
+  try {
+    fs.chmodSync(ffmpegPath, 0o755);
+  } catch (err) {
+    console.error("Failed to set ffmpeg executable permissions:", err);
+  }
+}
+
 ffmpeg.setFfmpegPath(ffmpegPath);
 
 function removeTempFile(filePath) {

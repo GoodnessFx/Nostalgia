@@ -251,8 +251,8 @@ export default function App() {
     if (screen === "result" && result) {
       return (
         <View style={styles.resultPage}>
-          <Text style={styles.resultTitle}>Your Cinematic Result</Text>
-          <Text style={styles.resultSubtitle}>The media has been graded successfully.</Text>
+          <Text style={styles.resultTitle}>Oya take</Text>
+          <Text style={styles.resultSubtitle}>(give us some credit abeg)</Text>
           <View style={styles.resultImageContainer}>
             <Image source={{ uri: result.outputUrl }} style={styles.resultImageLarge} resizeMode="contain" />
           </View>

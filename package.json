@@ -5,7 +5,7 @@
   "description": "Nostalgia monorepo (Expo app + Express backend)",
   "scripts": {
     "dev": "concurrently -n server,web -c blue,magenta \"npm run server:dev\" \"npm run app:web\"",
-    "build": "npm --prefix app install && npm --prefix app run build",
+    "build": "npm --prefix server install && npm --prefix app install && npm --prefix app run build",
     "app:start": "npm --prefix app run start",
     "app:web": "npm --prefix app run web",
     "app:typecheck": "npm --prefix app exec tsc --noEmit",

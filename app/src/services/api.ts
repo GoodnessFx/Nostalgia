@@ -32,10 +32,19 @@ export async function processMedia(
     body: formData,
   });
 
-  const json = await response.json();
+  if (response.status === 413) {
+    throw new Error("File too large! Vercel limits free serverless uploads to 4.5MB.");
+  }
+
+  let json;
+  try {
+    json = await response.json();
+  } catch (err) {
+    throw new Error(`Server returned an invalid response (${response.status}). The processing might have timed out or failed.`);
+  }
 
   if (!response.ok) {
-    throw new Error(json.error || "Request failed");
+    throw new Error(json?.error || "Request failed");
   }
 
   return json as ProcessResponse;

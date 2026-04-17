@@ -2,7 +2,7 @@
 
 Nostalgia is a simple AI-powered web editor for cinematic photo and video grading.
 
-Upload once, get the result, download or share.
+Upload once, get the result = download 
 
 ## Product Focus
 - **One-step flow:** upload -> process -> result.
@@ -58,22 +58,4 @@ What it needs: **Dark Cinematic Editorial** treatment — same energy as the sto
 - Midtones: Neutral 
 - Highlights: Slight **warm gold** 
 
---- 
-
-## The Secret Weapon 
-
-Crop it **tighter on the hand and watch** — eliminate the seat clutter. The rings + Apple Watch is the story. Frame it like jewelry editorial. 
-
-> *The details you wear tell the world who you're becoming before you say a word.*
-
-Here's your edited version. Applied: 
-
-- **-1 stop exposure** — darker, moodier 
-- **Crushed highlights** — no blown-out whites 
-- **Lifted shadows** — film-style matte blacks 
-- **Teal/blue shadow grade** + **warm gold highlights** 
-- **Desaturated** — pulls it away from phone-camera look 
-- **Cropped tighter** — hand, rings, and Apple Watch are the story now 
-- **Matte black floor** — that signature cinematic grade 
-
-> *Same hand, different frequency. Edit the image, edit the perception.*
+same frequency. Edit the image, edit the perception.*

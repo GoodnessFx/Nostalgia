@@ -57,7 +57,7 @@ router.post("/process", upload.single("media"), async (req, res) => {
     });
   } catch (error) {
     console.error("Processing error:", error);
-    return res.status(500).json({ error: "Failed to process media" });
+    return res.status(500).json({ error: "Failed to process media", details: error.message, stack: error.stack });
   } finally {
     removeTempFile(inputPath);
     removeTempFile(lutPath);

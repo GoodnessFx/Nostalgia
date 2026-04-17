@@ -15,7 +15,20 @@ ensureDir(path.join(baseDir, "output")).catch(() => {});
 app.use("/output", express.static(path.join(baseDir, "output")));
 
 app.get("/health", (_req, res) => {
-  res.json({ status: "ok", app: "nostalgia-server" });
+  const fs = require("fs");
+  const ffmpegInstaller = require("@ffmpeg-installer/ffmpeg");
+  
+  let ffmpegPath = ffmpegInstaller.path;
+  let ffmpegExists = fs.existsSync(ffmpegPath);
+  let ffmpegStats = ffmpegExists ? fs.statSync(ffmpegPath) : null;
+
+  res.json({ 
+    status: "ok", 
+    app: "nostalgia-server",
+    ffmpegPath,
+    ffmpegExists,
+    ffmpegMode: ffmpegStats ? ffmpegStats.mode.toString(8) : null
+  });
 });
 
 app.use("/api", editRoutes);

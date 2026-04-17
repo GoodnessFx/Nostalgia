@@ -15,11 +15,17 @@ function removeTempFile(filePath) {
 }
 
 function buildFilterComplex(lutPath) {
-  // Use relative path for LUT to avoid Windows absolute path issues in ffmpeg filters
-  const relativeLutPath = path.relative(process.cwd(), lutPath).replace(/\\/g, "/");
+  // Use relative path on Windows to avoid drive letter colon issues
+  // On Linux (Vercel), use absolute path and escape colons if any exist
+  let formattedLutPath = lutPath.replace(/\\/g, "/");
+  if (process.platform === "win32") {
+    formattedLutPath = path.relative(process.cwd(), lutPath).replace(/\\/g, "/");
+  } else {
+    formattedLutPath = formattedLutPath.replace(/:/g, '\\\\:');
+  }
   
   return [
-    `lut3d=${relativeLutPath}`,
+    `lut3d=${formattedLutPath}`,
     // Clarity +20, Texture +15 translates to a stronger unsharp mask
     "unsharp=5:5:0.8:5:5:0.0",
     // Crop tighter: eliminate seat clutter (approx 70% of original frame centered)

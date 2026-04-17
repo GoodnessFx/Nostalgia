@@ -43,17 +43,17 @@ router.post("/process", upload.single("media"), async (req, res) => {
     // 3. Process via FFmpeg pipeline (applies LUT + Unsharp Mask + Crop)
     await processMediaPipeline({ inputPath, outputPath, lutPath, isVideo: mediaIsVideo });
 
-    // 4. Return local static URL
-    const filename = path.basename(outputPath);
-    const host = req.get("host");
-    const protocol = req.headers["x-forwarded-proto"] || req.protocol;
-    const outputUrl = `${protocol}://${host}/output/${filename}`;
+    // 4. Return Data URI (fixes Vercel Serverless ephemeral storage 404s)
+    const fileBuffer = await fs.readFile(outputPath);
+    const base64 = fileBuffer.toString("base64");
+    const mimeType = mediaIsVideo ? "video/mp4" : "image/jpeg";
+    const outputUrl = `data:${mimeType};base64,${base64}`;
 
     return res.json({
-      sourceUrl: "", // We don't need to serve source back to UI
+      sourceUrl: "", 
       outputUrl,
       preset: "noir",
-      canDownloadLut: false, // Simplified
+      canDownloadLut: false,
     });
   } catch (error) {
     console.error("Processing error:", error);
@@ -61,7 +61,7 @@ router.post("/process", upload.single("media"), async (req, res) => {
   } finally {
     removeTempFile(inputPath);
     removeTempFile(lutPath);
-    // Note: We don't remove outputPath because we serve it statically to the user!
+    removeTempFile(outputPath); // Clean up since we sent it as base64
   }
 });
 

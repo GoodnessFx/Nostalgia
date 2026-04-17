@@ -5,7 +5,7 @@ const path = require("path");
 const { v4: uuidv4 } = require("uuid");
 const { saveCubeLut } = require("../services/lut");
 const { processMediaPipeline, removeTempFile } = require("../services/pipeline");
-const { ensureDir, tempFile, outputFile, lutFile } = require("../utils/files");
+const { ensureDir, tempFile, outputFile, lutFile, baseDir } = require("../utils/files");
 
 const router = express.Router();
 // Increased limit for large video uploads
@@ -22,9 +22,9 @@ router.post("/process", upload.single("media"), async (req, res) => {
 
   const mediaIsVideo = isVideo(req.file.mimetype);
   
-  await ensureDir(path.resolve(process.cwd(), "tmp"));
-  await ensureDir(path.resolve(process.cwd(), "output"));
-  await ensureDir(path.resolve(process.cwd(), "luts"));
+  await ensureDir(path.resolve(baseDir, "tmp"));
+  await ensureDir(path.resolve(baseDir, "output"));
+  await ensureDir(path.resolve(baseDir, "luts"));
 
   const ext = path.extname(req.file.originalname) || (mediaIsVideo ? ".mp4" : ".jpg");
   const outExt = mediaIsVideo ? ".mp4" : ".jpg";
@@ -45,7 +45,9 @@ router.post("/process", upload.single("media"), async (req, res) => {
 
     // 4. Return local static URL
     const filename = path.basename(outputPath);
-    const outputUrl = `http://localhost:4000/output/${filename}`;
+    const host = req.get("host");
+    const protocol = req.headers["x-forwarded-proto"] || req.protocol;
+    const outputUrl = `${protocol}://${host}/output/${filename}`;
 
     return res.json({
       sourceUrl: "", // We don't need to serve source back to UI

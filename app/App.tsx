@@ -164,7 +164,7 @@ export default function App() {
         
         const link = document.createElement("a");
         link.href = blobUrl;
-        const isVideo = result.outputUrl.endsWith(".mp4");
+        const isVideo = result.outputUrl.startsWith("data:video") || result.outputUrl.endsWith(".mp4");
         link.download = `Nostalgia-Edit-${Date.now()}.${isVideo ? "mp4" : "jpg"}`;
         
         // Append to body, click, and remove (required for some mobile browsers)

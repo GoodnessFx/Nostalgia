@@ -16,17 +16,28 @@ app.use("/output", express.static(path.join(baseDir, "output")));
 
 app.get("/health", (_req, res) => {
   const fs = require("fs");
-  const ffmpegInstaller = require("@ffmpeg-installer/ffmpeg");
-  
-  let ffmpegPath = ffmpegInstaller.path;
-  let ffmpegExists = fs.existsSync(ffmpegPath);
-  let ffmpegStats = ffmpegExists ? fs.statSync(ffmpegPath) : null;
+  let ffmpegPath = "unknown";
+  let ffmpegExists = false;
+  let ffmpegStats = null;
+  let requireError = null;
+
+  try {
+    const ffmpegInstaller = require("@ffmpeg-installer/ffmpeg");
+    ffmpegPath = ffmpegInstaller.path;
+    ffmpegExists = fs.existsSync(ffmpegPath);
+    if (ffmpegExists) {
+      ffmpegStats = fs.statSync(ffmpegPath);
+    }
+  } catch (e) {
+    requireError = e.message;
+  }
 
   res.json({ 
     status: "ok", 
     app: "nostalgia-server",
     ffmpegPath,
     ffmpegExists,
+    requireError,
     ffmpegMode: ffmpegStats ? ffmpegStats.mode.toString(8) : null
   });
 });

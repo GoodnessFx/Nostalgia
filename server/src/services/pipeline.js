@@ -1,18 +1,25 @@
 const fs = require("fs");
 const path = require("path");
 const ffmpeg = require("fluent-ffmpeg");
-const ffmpegInstaller = require("@ffmpeg-installer/ffmpeg");
 
-// Ensure FFmpeg binary is executable on Vercel/Linux
-if (process.platform !== "win32") {
-  try {
-    fs.chmodSync(ffmpegInstaller.path, 0o755);
-  } catch (err) {
-    console.error("Failed to set ffmpeg executable permissions:", err);
+let ffmpegPath = "ffmpeg";
+try {
+  const ffmpegInstaller = require("@ffmpeg-installer/ffmpeg");
+  ffmpegPath = ffmpegInstaller.path;
+  
+  // Ensure FFmpeg binary is executable on Vercel/Linux
+  if (process.platform !== "win32") {
+    try {
+      fs.chmodSync(ffmpegPath, 0o755);
+    } catch (err) {
+      console.error("Failed to set ffmpeg executable permissions:", err);
+    }
   }
+} catch (e) {
+  console.error("Failed to load @ffmpeg-installer/ffmpeg", e);
 }
 
-ffmpeg.setFfmpegPath(ffmpegInstaller.path);
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 function removeTempFile(filePath) {
   if (!filePath) return;

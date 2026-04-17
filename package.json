@@ -1,0 +1,24 @@
+{
+  "name": "nostalgia",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Nostalgia monorepo (Expo app + Express backend)",
+  "scripts": {
+    "dev": "concurrently -n server,web -c blue,magenta \"npm run server:dev\" \"npm run app:web\"",
+    "app:start": "npm --prefix app run start",
+    "app:web": "npm --prefix app run web",
+    "app:typecheck": "npm --prefix app exec tsc --noEmit",
+    "server:start": "npm --prefix server run start",
+    "server:dev": "npm --prefix server run dev"
+  },
+  "keywords": [
+    "expo",
+    "express",
+    "cinematic",
+    "ai"
+  ],
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

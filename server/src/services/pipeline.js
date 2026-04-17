@@ -4,8 +4,7 @@ const ffmpeg = require("fluent-ffmpeg");
 
 let ffmpegPath = "ffmpeg";
 try {
-  const ffmpegInstaller = require("@ffmpeg-installer/ffmpeg");
-  ffmpegPath = ffmpegInstaller.path;
+  ffmpegPath = require("ffmpeg-static");
   
   // Ensure FFmpeg binary is executable on Vercel/Linux
   if (process.platform !== "win32") {
@@ -16,7 +15,7 @@ try {
     }
   }
 } catch (e) {
-  console.error("Failed to load @ffmpeg-installer/ffmpeg", e);
+  console.error("Failed to load ffmpeg-static", e);
 }
 
 ffmpeg.setFfmpegPath(ffmpegPath);

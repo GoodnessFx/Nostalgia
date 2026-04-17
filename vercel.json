@@ -2,7 +2,7 @@
   "version": 2,
   "functions": {
     "server/src/index.js": {
-      "includeFiles": "server/node_modules/@ffmpeg-installer/**"
+      "includeFiles": "server/node_modules/ffmpeg-static/**"
     }
   },
   "builds": [

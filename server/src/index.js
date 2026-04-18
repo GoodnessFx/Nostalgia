@@ -33,12 +33,21 @@ app.get("/health", (_req, res) => {
 
 app.use("/api", editRoutes);
 
+// Serve frontend in production (Render)
+if (!process.env.VERCEL) {
+  const distPath = path.join(process.cwd(), "app", "dist");
+  app.use(express.static(distPath));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(distPath, "index.html"));
+  });
+}
+
 app.use((err, _req, res, _next) => {
   console.error(err);
   res.status(500).json({ error: "Internal server error", message: err.message });
 });
 
-if (process.env.NODE_ENV !== "production") {
+if (!process.env.VERCEL) {
   app.listen(env.port, () => {
     console.log(`Nostalgia backend running on port ${env.port}`);
   });

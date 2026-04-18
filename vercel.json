@@ -1,15 +1,6 @@
 {
   "version": 2,
-  "functions": {
-    "server/src/index.js": {
-      "includeFiles": "server/node_modules/ffmpeg-static/**"
-    }
-  },
   "builds": [
-    {
-      "src": "server/src/ping.js",
-      "use": "@vercel/node"
-    },
     {
       "src": "server/src/index.js",
       "use": "@vercel/node"
@@ -23,10 +14,6 @@
     }
   ],
   "routes": [
-    {
-      "src": "/api/ping",
-      "dest": "/server/src/ping.js"
-    },
     {
       "src": "/api/(.*)",
       "dest": "/server/src/index.js"

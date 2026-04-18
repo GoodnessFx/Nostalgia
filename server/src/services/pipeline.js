@@ -1,24 +1,11 @@
 const fs = require("fs");
 const path = require("path");
 const ffmpeg = require("fluent-ffmpeg");
+const ffmpegInstaller = require("@ffmpeg-installer/ffmpeg");
 
-let ffmpegPath = "ffmpeg";
-try {
-  ffmpegPath = require("ffmpeg-static");
-  
-  // Ensure FFmpeg binary is executable on Vercel/Linux
-  if (process.platform !== "win32") {
-    try {
-      fs.chmodSync(ffmpegPath, 0o755);
-    } catch (err) {
-      console.error("Failed to set ffmpeg executable permissions:", err);
-    }
-  }
-} catch (e) {
-  console.error("Failed to load ffmpeg-static", e);
-}
-
-ffmpeg.setFfmpegPath(ffmpegPath);
+// Note: @ffmpeg-installer works flawlessly out of the box on Vercel because it uses optionalDependencies 
+// which Vercel NFT bundles natively.
+ffmpeg.setFfmpegPath(ffmpegInstaller.path);
 
 function removeTempFile(filePath) {
   if (!filePath) return;

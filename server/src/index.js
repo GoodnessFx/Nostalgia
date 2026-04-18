@@ -15,11 +15,19 @@ ensureDir(path.join(baseDir, "output")).catch(() => {});
 app.use("/output", express.static(path.join(baseDir, "output")));
 
 app.get("/health", (_req, res) => {
-  const ffmpegInstaller = require("@ffmpeg-installer/ffmpeg");
+  let ffmpegPath = "unknown";
+  let err = null;
+  try {
+    const ffmpegInstaller = require("@ffmpeg-installer/ffmpeg");
+    ffmpegPath = ffmpegInstaller.path;
+  } catch (e) {
+    err = e.message;
+  }
   res.json({ 
     status: "ok", 
     app: "nostalgia-server",
-    ffmpegPath: ffmpegInstaller.path
+    ffmpegPath,
+    err
   });
 });
 

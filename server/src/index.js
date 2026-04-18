@@ -37,8 +37,13 @@ app.use("/api", editRoutes);
 if (!process.env.VERCEL) {
   const distPath = path.join(process.cwd(), "app", "dist");
   app.use(express.static(distPath));
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(distPath, "index.html"));
+  // Express 5 catch-all route fallback
+  app.use((req, res, next) => {
+    if (req.method === 'GET') {
+      res.sendFile(path.join(distPath, "index.html"));
+    } else {
+      next();
+    }
   });
 }
 

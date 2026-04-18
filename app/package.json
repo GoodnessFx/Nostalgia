@@ -16,7 +16,6 @@
     "expo-media-library": "^55.0.14",
     "expo-sharing": "^55.0.18",
     "expo-status-bar": "~3.0.9",
-    "nostalgia": "file:..",
     "react": "19.1.0",
     "react-dom": "^19.1.0",
     "react-native": "0.81.5",
